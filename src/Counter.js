@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {ThemeContext} from './App'
 
 //React allows us to write JSX, Component allows us to create a class
 
@@ -13,33 +14,41 @@ export default class Counter extends Component {
 
   render() {
     return (
-      <>
-        <div>
-          <button onClick={()=> this.changeCount(-1)}>-</button>
-          <span>{this.state.count}</span>
-          <button onClick={()=> this.changeCount(+1)}>+</button>
-        </div>
-      </>
+      <ThemeContext.Consumer>
+        {style => (
+
+          <div>
+            <button style = {style} onClick={() => this.changeCount(-1)}>-</button>
+            <span>{this.state.count}</span>
+            <button style = {style} onClick={() => this.changeCount(+1)}>+</button>
+          </div>
+        )}
+
+
+
+      </ThemeContext.Consumer>
+
     )
   }
 
   changeCount(amount) {
     this.setState(prevState => {
-      return {count: this.state.count + amount }
+      return { count: this.state.count + amount }
     })
     //this.setState({ count: this.state.count + amount })
   }
 }
-  /*Every single class compoment has a THIS.SETSTATE, which takes an object
-    and the object is going to be added in to the constructor's this.state
-    by using Object.assign behind the scenes. This overwrites ONLY keys passed in
+  /*
+  ThemeContext needs to be imported with { } because it isn't a default export
 
-    However this.setState is an asynchronous function, so if we're
-    changing the same thing twice in 1 call, it won't be done
-    sequentially.
+  ThemeContext needs to have a function in it, within which our JSX will be rendered.
 
-    To make sure we have a sequential change, we use PREVSTATE function
-    The function version makes sure we're using the previous state
-    If we don't need the previous state, say we want to reset the counter
-    then the non function version is fine.
-    */
+  The function has parenthesis instead of curly brackets, because the parenthesis tell
+  the code to return back to the function
+
+  Once setup, we have access to the style variable in all the code, it works like this
+  1. Style(css) is set to {style} value, which is the default we put in useState
+  2. When the button is pressed in App.js, it uses setTheme to change the style
+  and this style is then propagated in all compoments that consume it.
+
+  */

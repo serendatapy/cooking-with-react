@@ -1,35 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Counter from './Counter'
 import CounterHooks from './CounterHooks'
 
+export const ThemeContext = React.createContext();
+//consumer = provider
+
 function App() {
+  const [theme, setTheme] = useState('red')
   return (
-    <>
+    <ThemeContext.Provider value={{ backgroundColor: theme }}>
     Counter
     <Counter initialCount={0}/>
     Counter Hooks
     <CounterHooks initialCount={0}/>
-    </>
+    <button onClick = {()=> setTheme(prevTheme => {
+      return prevTheme === 'red' ? 'blue' : 'red'})}>Toggle Theme</button>
+    </ThemeContext.Provider>
   )
 }
 
 export default App;
 
-/*In react you can just put the HTML inside javascript
-without having to inject it in any special way
+/*
+Themes are a way of setting global variables, something that CAN'T
+be done in react!
 
-The ( ) after the return allows us to indent the code
+This way, all components within a theme, however deeply nested,
+will have access to those variables.
 
-<></> Are JSX fragments, which allow us to return
-multiple HTML elements as 1, which is what we're allowed to do
-
-JSX is a little different from HTML. For example with the keyword
-class, we need to use className, as Class is a reserved word in JS.
-
-Another difference, ALL tags have to be Self closed <input />
-or closed on purpose <input></input> even when HTML doesn't usually
-require it.
-
-Thanks to react, it's not necessary to do all the javascript calls
-such as getElementById().etc. You can have dynamic HTML off the bat!
+Everything within ThemeContext will have access to values provided
 */
