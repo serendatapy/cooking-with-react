@@ -8,3 +8,9 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+/*<App /> Refers to the App.js component, and it renders in root
+which is in the index.html
+
+Functional components render whatever is returned
+*/
