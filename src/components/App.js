@@ -1,6 +1,6 @@
 import React from 'react';
 import RecipeList from './RecipeList'
-//import Recipe from './Recipe';
+import '../css/app.css';
 
 function App() {
   return (
