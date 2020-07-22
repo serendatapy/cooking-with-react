@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import IngredientList from './ingredientList'
+import {RecipeContext} from './App'
 
 /*Recipe function starts to give the layout of the recipe,
 breaking up the recipe object. It then passes the
@@ -7,6 +8,10 @@ ingredients object to IngredientList component*/
 
 /*export default can be at the top, or at the bottom*/
 export default function Recipe(props) {
+
+  /*Thanks to context we don't need to worry about deeply nested prop passing
+  and we can just get the things we need from the context*/
+  const { handleRecipeDelete } = useContext(RecipeContext)
 
 /*Object destructuring to make it easier to access variables*/
   const {
@@ -16,7 +21,6 @@ export default function Recipe(props) {
     servings,
     instructions,
     ingredients,
-    handleRecipeDelete
   } = props;
 
   return (

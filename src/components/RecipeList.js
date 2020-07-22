@@ -1,14 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Recipe from './Recipe'
+import {RecipeContext} from './App'
 
-function RecipeList(props) {
-  /*we take in the props object and break it up
-  to more accessible variables*/
-  const {
-    recipes,
-    handleRecipeAdd,
-    handleRecipeDelete,
-   } = props;
+
+/*thanks to context we can reduce the number of props passed*/
+function RecipeList({recipes}) {
+  /*using context we can access the just the method we need*/
+  const { handleRecipeAdd } = useContext(RecipeContext)
 
   return (
     <div className="recipe-list">
@@ -16,13 +14,10 @@ function RecipeList(props) {
         {
           recipes.map(
             recipe => {
-              /*the delete function is passed to recipe*/
+              /*We no longer need to pass down the
+              delete functions as it is in context*/
               return (
-                <Recipe
-                  key={recipe.id}
-                  handleRecipeDelete= {handleRecipeDelete}
-                  {...recipe}
-                />
+                <Recipe key={recipe.id} {...recipe}/>
                 )
             }
           )

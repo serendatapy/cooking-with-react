@@ -8,12 +8,23 @@ so there is only need to import this one
 
 App.js imports RecipeList and then returns it after passing it props (to be rendered by index.js)
 
-tip: using handle
+tip: using handle infront of button functions as a reminder that the function
+handles on click events on the buttons.
 */
+
+/*To avoid passing down useless props, we can instead use context*/
+export const RecipeContext = React.createContext()
 
 function App() {
   /*Create a state with a method to update - set default to sample*/
   const [recipes, setRecipes] = useState (sampleRecipes)
+
+  /*we create an object containing what we want
+   to make available through our context*/
+   const recipeContextValue = {
+    handleRecipeAdd,
+    handleRecipeDelete
+  }
 
   /*2 functions to ADD and DELETE recipes*/
   function handleRecipeAdd(){
@@ -39,17 +50,16 @@ function App() {
     setRecipes(recipes.filter(recipe => recipe.id !== id))
   }
 
-  /*Due to the fact that these functions are NOT INSIDE
-  the component we want to modify(because they need access to data)
-  We need to pass these functions to the child components
-  as below.*/
+  /*Finally we pass our object to the context, and wrap
+  our component in it, in this way, that component and all children
+  could, if needed, have access to it. This allows us to not need to pass
+  the values down in props*/
 
   return (
-    <RecipeList
-      recipes = {recipes}
-      handleRecipeAdd = {handleRecipeAdd}
-      handleRecipeDelete ={handleRecipeDelete}
-    />
+    <RecipeContext.Provider value= {recipeContextValue}>
+      <RecipeList recipes = {recipes}/>
+    </RecipeContext.Provider>
+
   )
 }
 
