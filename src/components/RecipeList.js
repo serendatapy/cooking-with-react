@@ -1,16 +1,26 @@
 import React from 'react'
 import Recipe from './Recipe'
 
-function RecipeList({ recipes }) {
+function RecipeList(props) {
+  /*we take in the props object and break it up
+  to more accessible variables*/
+  const {
+    recipes,
+    handleRecipeAdd,
+    handleRecipeDelete,
+   } = props;
+
   return (
     <div className="recipe-list">
       <div>
         {
           recipes.map(
             recipe => {
+              /*the delete function is passed to recipe*/
               return (
                 <Recipe
                   key={recipe.id}
+                  handleRecipeDelete= {handleRecipeDelete}
                   {...recipe}
                 />
                 )
@@ -18,8 +28,14 @@ function RecipeList({ recipes }) {
           )
         }
       </div>
+
       <div className="recipe-list__add-recipe-btn-container">
-        <button className="btn btn--primary">Add a recipe</button>
+        <button
+        className="btn btn--primary"
+        onClick={handleRecipeAdd}
+        >
+          Add a recipe
+        </button>
       </div>
     </div>
   )

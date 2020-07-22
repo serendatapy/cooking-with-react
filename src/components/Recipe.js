@@ -8,13 +8,15 @@ ingredients object to IngredientList component*/
 /*export default can be at the top, or at the bottom*/
 export default function Recipe(props) {
 
-  /*Object destructuring to make it easier to access variables*/
+/*Object destructuring to make it easier to access variables*/
   const {
+    id,
     name,
     cookTime,
     servings,
     instructions,
-    ingredients
+    ingredients,
+    handleRecipeDelete
   } = props;
 
   return (
@@ -24,7 +26,14 @@ export default function Recipe(props) {
         <h3 className="recipe__title">{name}</h3>
         <div>
           <button className="btn btn--primary mr-1">Edit</button>
-          <button className="btn btn--danger">Delete</button>
+
+          <button
+          className="btn btn--danger"
+          onClick= {()=> handleRecipeDelete(id)}
+          >
+            Delete
+          </button>
+
         </div>
       </div>
 
