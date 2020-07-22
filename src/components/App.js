@@ -1,12 +1,22 @@
 import React from 'react';
 import RecipeList from './RecipeList'
 import '../css/app.css';
+/*
+All the css files are connected to this one through imports (react style)
+so there is only need to import this one
+
+App.js imports RecipeList and then returns it after passing it props (to be rendered by index.js)
+*/
 
 function App() {
   return (
     <RecipeList recipes = {sampleRecipes}/>
   )
 }
+
+/*the information about the recipes, which it
+passes to the recipeList component.
+An Array of Recipe objects*/
 
 const sampleRecipes = [
   {
@@ -49,8 +59,4 @@ const sampleRecipes = [
   }
 ]
 
-export default App;
-
-/*
-
-*/
+export default App; /*app makes itself importable*/
