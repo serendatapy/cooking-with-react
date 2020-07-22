@@ -2,10 +2,12 @@ import React, {useContext} from 'react'
 import Recipe from './Recipe'
 import {RecipeContext} from './App'
 
+/*Note: We don't need a contextConsumer
+because the {useContext} hook takes care of it*/
 
 /*thanks to context we can reduce the number of props passed*/
 function RecipeList({recipes}) {
-  /*using context we can access the just the method we need*/
+  /*using context we can access just the method we need from context object*/
   const { handleRecipeAdd } = useContext(RecipeContext)
 
   return (
@@ -15,7 +17,7 @@ function RecipeList({recipes}) {
           recipes.map(
             recipe => {
               /*We no longer need to pass down the
-              delete functions as it is in context*/
+              delete function as it is in Context*/
               return (
                 <Recipe key={recipe.id} {...recipe}/>
                 )

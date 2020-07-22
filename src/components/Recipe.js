@@ -13,7 +13,7 @@ export default function Recipe(props) {
   and we can just get the things we need from the context*/
   const { handleRecipeDelete } = useContext(RecipeContext)
 
-/*Object destructuring to make it easier to access variables*/
+/*Object destructuring to make it easier/cleaner to access variables*/
   const {
     id,
     name,

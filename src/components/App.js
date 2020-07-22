@@ -3,16 +3,19 @@ import RecipeList from './RecipeList'
 import '../css/app.css';
 import { v4 as uuidv4 } from 'uuid';
 /*
+The use of Context is aimed specically at tackling the 'prop drilling' through
+many levels of component hierachy, since those components don't need the props.
+
 All the css files are connected to this one through imports (react style)
 so there is only need to import this one
 
-App.js imports RecipeList and then returns it after passing it props (to be rendered by index.js)
+App.js imports RecipeList and then returns it after passing it default state (to be rendered by index.js)
 
 tip: using handle infront of button functions as a reminder that the function
 handles on click events on the buttons.
 */
 
-/*To avoid passing down useless props, we can instead use context*/
+/*To avoid passing down useless props, we can use Context*/
 export const RecipeContext = React.createContext()
 
 function App() {
@@ -20,7 +23,8 @@ function App() {
   const [recipes, setRecipes] = useState (sampleRecipes)
 
   /*we create an object containing what we want
-   to make available through our context*/
+   to make available through our context
+   (this object uses shorthand notation)*/
    const recipeContextValue = {
     handleRecipeAdd,
     handleRecipeDelete
@@ -42,18 +46,18 @@ function App() {
         ]
     }
     /*Set the new state to re-render*/
-    setRecipes([...recipes, newRecipe])
+    setRecipes([...recipes, newRecipe]) //previous state + recipe to add
   }
 
   function handleRecipeDelete(id){
     /*Set the new state to re-render*/
-    setRecipes(recipes.filter(recipe => recipe.id !== id))
+    setRecipes(recipes.filter(recipe => recipe.id !== id)) //return all recipes minus one with selected id
   }
 
   /*Finally we pass our object to the context, and wrap
   our component in it, in this way, that component and all children
-  could, if needed, have access to it. This allows us to not need to pass
-  the values down in props*/
+  could, if needed, have access to it. This allows us to avoid prop drilling, and to
+  access the props we need, only where needed*/
 
   return (
     <RecipeContext.Provider value= {recipeContextValue}>
