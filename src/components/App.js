@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RecipeList from './RecipeList'
 import '../css/app.css';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,10 +17,53 @@ handles on click events on the buttons.
 
 /*To avoid passing down useless props, we can use Context*/
 export const RecipeContext = React.createContext()
+/*tip: by naming it in this way, you can find it easier in devtools*/
+const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes';
 
 function App() {
   /*Create a state with a method to update - set default to sample*/
   const [recipes, setRecipes] = useState (sampleRecipes)
+
+  /*UseEffect(function,dependencies) will update itself each time the
+  dependency changes. The dependency is whatever is passed as the second argument.
+  It's very similar to a conditional. When this component changes, do this function.
+  Important: The order of useEffects is important.*/
+
+  //this useEffect GETS recipes from local storage if it's not empty, just on load
+  useEffect(()=>{
+    /*This use effect is going to be run once ([]) to load local storage*/
+    const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if(recipeJSON != null) setRecipes(JSON.parse(recipeJSON))
+  }, [])
+
+  /*This useEffect SETS the information in local storage*/
+  useEffect(()=> {
+    /*this is stringified because local storage only supports strings*/
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recipes))
+  }, [recipes])
+
+  /*Use effect can also be used to CLEAN UP, i.e if you want to disconnect from
+  an API
+
+  in this case onLoad the first console will be printed. If I remove  or add
+  a recipe however the console in the return statement will be run first.
+  This is because we want to make sure we clean up. You call a function so that after
+  the rendering you unmount from the component.
+
+  every time we delete a component all returns are being called from our useEffects
+  to clean up. For example if the use effect sets a listener, with the return
+  statement we can remove it.
+  But not only when a component gets deleted. It's called every time after the
+  the first time, to make sure we clean up before we reinstate the useEffect.
+
+  useEffect(()=> {
+    console.log('Render')
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recipes))
+    return () => console.log('recipes set')
+  }, [recipes])
+  */
+
+
 
   /*we create an object containing what we want
    to make available through our context
