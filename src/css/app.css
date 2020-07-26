@@ -1,15 +1,20 @@
-/*comes from create react app*/
+/*comes from create react app
+To keep things ordered we can use one css file to rule them all!*/
 @import-normalize;
 @import 'font.css';
 @import 'buttons.css';
 @import 'recipe-list.css';
 @import 'recipe.css';
 @import 'ingredient-list.css';
+@import 'recipe-edit.css';
 
 
 
 *,*::before, *::after {
   font-family: Gotham Rounded, sans-serif;
+  box-sizing: border-box;
+  /*this makes it so that the width we define is going to be an accumulation of padding
+  border margin etc so it's never going to overflow*/
 }
 
 html {

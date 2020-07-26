@@ -1,0 +1,10 @@
+.recipe-edit {
+  padding: 30px;
+  padding-top: 10px;
+  position: fixed; /*because we want it to stay always in the same place*/
+  right: 0; /*make sure it's always in the top right*/
+  top: 0;
+  width: 50%;
+  max-height: 100%; /*so it never goes beyond the page*/
+  overflow-y: auto; /*scroll bar if it did*/
+}
