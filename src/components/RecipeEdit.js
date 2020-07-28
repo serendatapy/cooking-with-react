@@ -1,7 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import RecipeIngredientEdit from './RecipeIngredientEdit';
+import { RecipeContext } from './App'
 
 export default function RecipeEdit({recipe}) {
+  const { handleRecipeChange } = useContext(RecipeContext)
+
+  /*Never overwrite props or states in react, unless absolutely necessary*/
+  function handleChange(changes) {
+    handleRecipeChange(recipe.id, {...recipe,...changes})
+  }
+
+  function handleIngredientChange (id,ingredient){
+    const newIngredients = [...recipe.ingredients]
+    const index = newIngredients.findIndex(i => i.id === id)
+    newIngredients[index] = ingredient /*swap out old recipe for new recipe*/
+    handleChange({ingredients: newIngredients}) /*change the state*/
+  }
+
+
+
   return (
     <div className="recipe-edit">
       <div className="recipe-edit__remove-button-container">
@@ -19,6 +36,7 @@ export default function RecipeEdit({recipe}) {
           name="name"
           id="name"
           value={recipe.name} /*this needs on change, otherwise it's ineditable*/
+          onInput={e => handleChange({name: e.target.value})}
           className="recipe-edit__input"
         />
 
@@ -32,6 +50,7 @@ export default function RecipeEdit({recipe}) {
           name="cookTime"
           id="cookTime"
           value={recipe.cookTime}
+          onInput={e => handleChange({cookTime: e.target.value})}
           className="recipe-edit__input"
         />
 
@@ -46,6 +65,7 @@ export default function RecipeEdit({recipe}) {
           name="servings"
           id="servings"
           value= {recipe.servings}
+          onInput={e => handleChange({servings: parseInt(e.target.value) || ''})}
           className="recipe-edit__input"/>
 
         <label
@@ -56,8 +76,10 @@ export default function RecipeEdit({recipe}) {
         <textarea
         name="instructions"
         className="recipe-edit__input"
+        onInput={e => handleChange({instructions: e.target.value})}
+        value={recipe.instructions} /*little bit different from html*/
         id="instructions">
-        {recipe.instructions}
+
         </textarea>
 
       </div>
@@ -71,6 +93,7 @@ export default function RecipeEdit({recipe}) {
         {recipe.ingredients.map(ingredient => (
           <RecipeIngredientEdit
           key={ingredient.id}
+          handleIngredientChange={handleIngredientChange}
           ingredient={ingredient}
           />
         ))}

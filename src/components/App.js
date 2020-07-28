@@ -54,7 +54,8 @@ function App() {
    const recipeContextValue = {
     handleRecipeAdd,
     handleRecipeDelete,
-    handleRecipeSelect
+    handleRecipeSelect,
+    handleRecipeChange
   }
   function handleRecipeSelect (id){ /*just for consistent naming*/
     setSelectedRecipeId(id)
@@ -77,6 +78,16 @@ function App() {
     }
     /*Set the new state to re-render*/
     setRecipes([...recipes, newRecipe]) //previous state + recipe to add
+  }
+
+  /*react doesn't allow you to change state, which is why we're using const
+  so to do it we need to create a duplicate array, then set old state to new state.
+  handleRecipeChange(id of recipe being changed, recipe we have changed)*/
+  function handleRecipeChange(id, recipe) {
+    const newRecipe = [...recipes]
+    const index = newRecipe.findIndex(r => r.id === id)
+    newRecipe[index] = recipe /*swap out old recipe for new recipe*/
+    setRecipes(newRecipe) /*change the state*/
   }
 
   function handleRecipeDelete(id){
