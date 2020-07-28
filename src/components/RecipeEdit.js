@@ -1,7 +1,7 @@
 import React from 'react'
 import RecipeIngredientEdit from './RecipeIngredientEdit';
 
-export default function RecipeEdit() {
+export default function RecipeEdit({recipe}) {
   return (
     <div className="recipe-edit">
       <div className="recipe-edit__remove-button-container">
@@ -18,6 +18,7 @@ export default function RecipeEdit() {
           type="text"
           name="name"
           id="name"
+          value={recipe.name} /*this needs on change, otherwise it's ineditable*/
           className="recipe-edit__input"
         />
 
@@ -30,6 +31,7 @@ export default function RecipeEdit() {
           type="text"
           name="cookTime"
           id="cookTime"
+          value={recipe.cookTime}
           className="recipe-edit__input"
         />
 
@@ -43,6 +45,7 @@ export default function RecipeEdit() {
           min="1"
           name="servings"
           id="servings"
+          value= {recipe.servings}
           className="recipe-edit__input"/>
 
         <label
@@ -54,6 +57,7 @@ export default function RecipeEdit() {
         name="instructions"
         className="recipe-edit__input"
         id="instructions">
+        {recipe.instructions}
         </textarea>
 
       </div>
@@ -64,8 +68,12 @@ export default function RecipeEdit() {
         <div>Name</div>
         <div>Amount</div>
         <div></div>
-        <RecipeIngredientEdit />
-        <RecipeIngredientEdit />
+        {recipe.ingredients.map(ingredient => (
+          <RecipeIngredientEdit
+          key={ingredient.id}
+          ingredient={ingredient}
+          />
+        ))}
         {/* For the moment 2 just as place holders while we hook up functionality */}
       </div>
       <div className="recipe-edit__add-ingredient-btn-container">
@@ -79,4 +87,9 @@ export default function RecipeEdit() {
 /*
 &times;
 htmlFor to avoid conflicts with javascript
+
+Updating Values Notes: The value of a form field gets its value from the state,
+not from user input. User input updates the state which is then used
+by React to update the value of the form field. The form always reflects
+the current state values when form fields have values set to the state values.
 */

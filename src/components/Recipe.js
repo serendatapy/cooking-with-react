@@ -11,7 +11,7 @@ export default function Recipe(props) {
 
   /*Thanks to context we don't need to worry about deeply nested prop passing
   and we can just get the things we need from the context*/
-  const { handleRecipeDelete } = useContext(RecipeContext)
+  const { handleRecipeDelete, handleRecipeSelect } = useContext(RecipeContext)
 
 /*Object destructuring to make it easier/cleaner to access variables*/
   const {
@@ -29,7 +29,12 @@ export default function Recipe(props) {
       <div className="recipe__header">
         <h3 className="recipe__title">{name}</h3>
         <div>
-          <button className="btn btn--primary mr-1">Edit</button>
+          <button
+          className="btn btn--primary mr-1"
+          onClick={()=> handleRecipeSelect(id)}
+          >
+            Edit
+          </button>
 
           <button
           className="btn btn--danger"
