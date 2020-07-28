@@ -66,16 +66,17 @@ function App() {
     const newRecipe = {
       //id: Date.now().toString()
       id: uuidv4(),
-      name: 'New',
-      servings: '1',
-      cookTime: '1:00',
-      instructions: 'Instr.',
+      name: '',
+      servings: '',
+      cookTime: '',
+      instructions: '',
       ingredients: [{
           id: uuidv4(),
-          name: 'Name',
-          amount: '1 Tbs'}
+          name: '',
+          amount: ''}
         ]
     }
+    setSelectedRecipeId(newRecipe.id)
     /*Set the new state to re-render*/
     setRecipes([...recipes, newRecipe]) //previous state + recipe to add
   }
@@ -91,6 +92,9 @@ function App() {
   }
 
   function handleRecipeDelete(id){
+    if(selectedRecipeId !=null && selectedRecipeId === id){
+      setSelectedRecipeId(undefined)
+    }
     /*Set the new state to re-render*/
     setRecipes(recipes.filter(recipe => recipe.id !== id)) //return all recipes minus one with selected id
   }
