@@ -20,13 +20,21 @@ import { v4 as uuidv4 } from 'uuid';
 
 /*To avoid passing down useless props, we can use Context*/
 export const RecipeContext = React.createContext()
+
+
 /*tip: by naming it in this way, you can find it easier in devtools*/
 const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes';
 
 function App() {
+
+  /*Create a state with a method to update - without default */
   const [selectedRecipeId,setSelectedRecipeId] = useState();
-  /*Create a state with a method to update - set default to sample*/
+
+  /*Create a state with a method to update -
+  set default value of recipes to sampleRecipe if no state is found*/
   const [recipes, setRecipes] = useState(sampleRecipes);
+
+  /*When user clicks edit button, selected recipe is filtered out by id*/
   const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId);
 
   /*UseEffect(function,dependencies) will update itself each time the
@@ -34,13 +42,15 @@ function App() {
   It's very similar to a conditional. When this component changes, do this function.
   Important: The order of useEffects is important.*/
 
-  //this useEffect GETS recipes from local storage if it's not empty, just once([]) on load
+  /*this useEffect GETS recipes from local storage if it's not empty,
+  just once([]) on load*/
   useEffect(()=>{
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
     if(recipeJSON != null) setRecipes(JSON.parse(recipeJSON))
   }, [])
 
-  /*This useEffect SETS the information in local storage*/
+  /*This useEffect SETS the information in local storage. It's activated whenever
+  there is a change in recipes*/
   useEffect(()=> {
     /*this is stringified because local storage only supports strings*/
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recipes))
@@ -99,7 +109,7 @@ function App() {
     setRecipes(recipes.filter(recipe => recipe.id !== id)) //return all recipes minus one with selected id
   }
 
-  /*THEME: Finally we pass our object to the context, and wrap
+  /*THEME (Provider): Finally we pass our object to the context, and wrap
   our component in it, in this way, that component and all children
   could, if needed, have access to it (context). This allows us to avoid prop drilling, and to
   access the props we need, only where needed*/
@@ -111,10 +121,11 @@ function App() {
     </RecipeContext.Provider>
   )
 }
-/*RecipeEdit recipe = {selectedRecipe} passes the object to the component
+/*recipe = {selectedRecipe} passes the object to the component
 Hiding effect
-{selectedRecipe && <RecipeEdit recipe = {selectedRecipe}/>} -> What it does
-is that if selected recipe is undefined (so false) then it won't execute second part.
+{selectedRecipe && <RecipeEdit recipe = {selectedRecipe}/>} -> if selected recipe
+is undefined (so false) then it won't execute second part. (when no recipe
+selected, don't show edit window)
 else it will because it's an && statement.
 */
 
