@@ -163,7 +163,19 @@ Use effect can also be used to CLEAN UP, i.e if you want to disconnect from
   to the same variable. These could go out of sync and produce bugs. Always store
   id if you can reference it from other objects you have, makes it more consistent.
 
+  Extention Ideas by Level:
+  1. Add a search box at top of recipe list, whatever you type in, it filters
+  through list of recipes, and shows only what matches search term. For example
+  by typing 'ch' it will show chicken and not pork.
 
+  2.Add another section to RecipeEditList and display, which will show who created
+  the recipe.
+  then add top or bottom of recipeEdit section, who created the recipe,
+  it'll give you the option to add multiple people. You'll need an add button, input
+  and label, and will need to be added to the recipe. (hint: very similar to ingredient)
+
+  3.Create Backend: instead of storing in local storage, use an api so that it will
+  be stored in a database. The only things that will change are the useEffects.
 
 
 
