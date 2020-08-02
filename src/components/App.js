@@ -1,80 +1,47 @@
-/*
-The use of Context(THEME) is aimed specically at tackling the 'prop drilling' through
-many levels of component hierachy, since those components don't need the props.
-
-All the css files are connected to this one through imports (react style)
-so there is only need to import this one
-
-App.js imports RecipeList and then returns it after passing it default state (to be rendered by index.js)
-
-tip: using handle infront of button functions as a reminder that the function
-handles on click events on the buttons.
-*/
-
 import React, { useState, useEffect } from 'react';
 import RecipeList from './RecipeList';
 import RecipeEdit from './RecipeEdit';
 import '../css/app.css';
 import { v4 as uuidv4 } from 'uuid';
 
-
-/*To avoid passing down useless props, we can use Context*/
 export const RecipeContext = React.createContext()
 
-
-/*tip: by naming it in this way, you can find it easier in devtools*/
 const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes';
 
 function App() {
 
-  /*Create a state with a method to update - without default */
+  const [recipes, setRecipes] = useState(sampleRecipes);
   const [selectedRecipeId,setSelectedRecipeId] = useState();
 
-  /*Create a state with a method to update -
-  set default value of recipes to sampleRecipe if no state is found*/
-  const [recipes, setRecipes] = useState(sampleRecipes);
-
-  /*When user clicks edit button, selected recipe is filtered out by id*/
+  /*On edit btn click,recipe is found out by id & passed to RecipeEdit*/
   const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId);
 
-  /*UseEffect(function,dependencies) will update itself each time the
-  dependency changes. The dependency is whatever is passed as the second argument.
-  It's very similar to a conditional. When this component changes, do this function.
-  Important: The order of useEffects is important.*/
-
-  /*this useEffect GETS recipes from local storage if it's not empty,
+  /*GETS recipes from local storage if it's not empty,
   just once([]) on load*/
   useEffect(()=>{
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
     if(recipeJSON != null) setRecipes(JSON.parse(recipeJSON))
   }, [])
 
-  /*This useEffect SETS the information in local storage. It's activated whenever
-  there is a change in recipes*/
+  /*SETS the information to local storage whenever recipe changes*/
   useEffect(()=> {
-    /*this is stringified because local storage only supports strings*/
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recipes))
   }, [recipes])
 
-  /*See end of file for extra notes on useEffect*/
-
-  /*THEME: we create an object containing what we want
-   to make available through our context
-   (this object uses shorthand notation)*/
-   const recipeContextValue = {
+  const recipeContextValue = {
     handleRecipeAdd,
     handleRecipeDelete,
     handleRecipeSelect,
     handleRecipeChange
   }
-  function handleRecipeSelect (id){ /*just for consistent naming*/
+
+  /*-----------------FUNCTIONS-------------------*/
+  function handleRecipeSelect (id){
     setSelectedRecipeId(id)
   }
 
-  /*THEME:2 functions to ADD and DELETE recipes*/
   function handleRecipeAdd(){
     const newRecipe = {
-      //id: Date.now().toString()
       id: uuidv4(),
       name: '',
       servings: '',
@@ -87,13 +54,11 @@ function App() {
         ]
     }
     setSelectedRecipeId(newRecipe.id)
-    /*Set the new state to re-render*/
-    setRecipes([...recipes, newRecipe]) //previous state + recipe to add
+    setRecipes([...recipes, newRecipe])
+    /*Set the new state to re-render
+    takes recipes array(...)opens it and adds newRecipe to the end*/
   }
 
-  /*react doesn't allow you to change state, which is why we're using const
-  so to do it we need to create a duplicate array, then set old state to new state.
-  handleRecipeChange(id of recipe being changed, recipe we have changed)*/
   function handleRecipeChange(id, recipe) {
     const newRecipe = [...recipes]
     const index = newRecipe.findIndex(r => r.id === id)
@@ -105,15 +70,10 @@ function App() {
     if(selectedRecipeId !=null && selectedRecipeId === id){
       setSelectedRecipeId(undefined)
     }
-    /*Set the new state to re-render*/
     setRecipes(recipes.filter(recipe => recipe.id !== id)) //return all recipes minus one with selected id
   }
 
-  /*THEME (Provider): Finally we pass our object to the context, and wrap
-  our component in it, in this way, that component and all children
-  could, if needed, have access to it (context). This allows us to avoid prop drilling, and to
-  access the props we need, only where needed*/
-
+/*-------------------RENDERING---------------------*/
   return (
     <RecipeContext.Provider value= {recipeContextValue}>
       <RecipeList recipes = {recipes}/>
@@ -121,19 +81,8 @@ function App() {
     </RecipeContext.Provider>
   )
 }
-/*recipe = {selectedRecipe} passes the object to the component
-Hiding effect
-{selectedRecipe && <RecipeEdit recipe = {selectedRecipe}/>} -> if selected recipe
-is undefined (so false) then it won't execute second part. (when no recipe
-selected, don't show edit window)
-else it will because it's an && statement.
-*/
 
-
-/*the information about the recipes, which it
-passes to the recipeList component.
-An Array of Recipe objects*/
-
+/*Placeholder default data*/
 const sampleRecipes = [
   {
     id: 1,
@@ -175,26 +124,4 @@ const sampleRecipes = [
   }
 ]
 
-export default App; /*app makes itself importable*/
-
-
-/*Use effect can also be used to CLEAN UP, i.e if you want to disconnect from
-  an API
-
-  in this case onLoad the first console will be printed. If I remove  or add
-  a recipe however the console in the return statement will be run first.
-  This is because we want to make sure we clean up. You call a function so that after
-  the rendering you unmount from the component.
-
-  every time we delete a component all returns are being called from our useEffects
-  to clean up. For example if the use effect sets a listener, with the return
-  statement we can remove it.
-  But not only when a component gets deleted. It's called every time after the
-  the first time, to make sure we clean up before we reinstate the useEffect.
-
-  useEffect(()=> {
-    console.log('Render')
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recipes))
-    return () => console.log('recipes set')
-  }, [recipes])
-  */
+export default App;

@@ -2,22 +2,17 @@ import React, {useContext} from 'react'
 import Recipe from './Recipe'
 import {RecipeContext} from './App'
 
-/*Note: We don't need a contextConsumer
-because the {useContext} hook takes care of it*/
-
-/*thanks to context we can reduce the number of props passed*/
+/*pass in 'recipes' from 'App'*/
 function RecipeList({recipes}) {
-  /*using context we can access just the method we need from context object*/
   const { handleRecipeAdd } = useContext(RecipeContext)
 
   return (
     <div className="recipe-list">
       <div>
         {
+      /*(...)passes recipe as individual properties instead of in an obj*/
           recipes.map(
             recipe => {
-              /*We no longer need to pass down the
-              delete function as it is in Context*/
               return (
                 <Recipe key={recipe.id} {...recipe}/>
                 )
@@ -39,20 +34,3 @@ function RecipeList({recipes}) {
 }
 
 export default RecipeList;
-
-/*
-RecipeList takes the recipes array passed from app.js,
-destructures it and passes each recipe to the Recipe.js component.
-
-then returns individual Recipe components.
-
-Using the Spread operator passes all the values individually
-
-The recipes.map what it does is;
-1.for every recipe, break up the object and put it in JSX format
-for later rendering.
-
-Every time you use an array you need to add a key.
-With the keys, react knows what to re-render specifically,
-rather than re-render all the components at once.
-*/
