@@ -13,8 +13,14 @@ function App() {
   const [recipes, setRecipes] = useState(sampleRecipes);
   const [selectedRecipeId,setSelectedRecipeId] = useState();
 
+  /*This will be similar to displaying selected recipes, but multiple*/
+  const [searchedRecipes,setSearchedRecipe] = useState();
+
   /*On edit btn click,recipe is found out by id & passed to RecipeEdit*/
   const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId);
+
+  /*When input is entered, filter out recipes, return array of matching term*/
+  //const searchedRecipes = recipes.filter(/*recipe => recipe.name contains searchRecipeTerm*/);
 
   /*GETS recipes from local storage if it's not empty,
   just once([]) on load*/
@@ -32,7 +38,8 @@ function App() {
     handleRecipeAdd,
     handleRecipeDelete,
     handleRecipeSelect,
-    handleRecipeChange
+    handleRecipeChange,
+    recipeSearch
   }
 
   /*-----------------FUNCTIONS-------------------*/
@@ -73,14 +80,33 @@ function App() {
     setRecipes(recipes.filter(recipe => recipe.id !== id)) //return all recipes minus one with selected id
   }
 
+  function recipeSearch(str){
+    let searchResult;
+    setSelectedRecipeId(undefined) //remove edit if searching
+
+    if(str !== undefined && str.trim() !== ""){
+      const regX = new RegExp(str,'i');
+      searchResult = recipes.filter(
+        recipe => recipe.name.search(regX) !== -1)
+      setSearchedRecipe(searchResult)
+    }
+    else setSearchedRecipe(undefined)
+  }
+
+
 /*-------------------RENDERING---------------------*/
   return (
     <RecipeContext.Provider value= {recipeContextValue}>
-      <RecipeList recipes = {recipes}/>
+      {searchedRecipes ? <RecipeList recipes = {searchedRecipes}/>:<RecipeList recipes = {recipes}/>}
       {selectedRecipe && <RecipeEdit recipe={selectedRecipe}/>}
     </RecipeContext.Provider>
   )
 }
+//add conditional statement
+/* {searchedRecipes ?
+<RecipeList recipe={searchedRecipes}/> :
+ <RecipeList recipe={recipes}/>}
+ <RecipeList recipes = {recipes}/>*/
 
 /*Placeholder default data*/
 const sampleRecipes = [
