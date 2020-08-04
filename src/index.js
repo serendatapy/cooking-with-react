@@ -9,8 +9,6 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-/*<App /> Refers to the App.js component, and it renders in root
-which is in the index.html
-
-Functional components render whatever is returned
+/*<App /> Refers to App.js component, and it renders in the 'root' element
+in the index.html through 2nd argument getElementById('root').
 */
