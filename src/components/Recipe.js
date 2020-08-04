@@ -1,5 +1,6 @@
 import React, {useContext} from 'react'
 import IngredientList from './ingredientList'
+import AuthorList from './AuthorList'
 import {RecipeContext} from './App'
 
 /*export default can be at the top, or at the bottom*/
@@ -16,6 +17,7 @@ easier/cleaner to access variables*/
     servings,
     instructions,
     ingredients,
+    authors,
   } = props;
 
   return (
@@ -62,6 +64,13 @@ easier/cleaner to access variables*/
         <span className="recipe__label">Ingredients:</span>
         <div className="recipe__value recipe__value--indented">
           <IngredientList ingredients = {ingredients}/>
+        </div>
+      </div>
+
+      <div className="recipe__row">
+        <span className="recipe__label">Authors:</span>
+        <div className="recipe__value recipe__value--indented">
+          <AuthorList authors = {authors}/>
         </div>
       </div>
 

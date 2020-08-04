@@ -127,6 +127,12 @@ const sampleRecipes = [
         name: 'Salt',
         amount: '1 Tbs'
       }
+    ],
+    authors: [
+      {
+        id: 1,
+        name: 'Alejandro'
+      }
     ]
   },
   {
@@ -145,6 +151,16 @@ const sampleRecipes = [
         id: 2,
         name: 'Paprika',
         amount: '2 Tbs'
+      }
+    ],
+    authors: [
+      {
+        id: 2,
+        name: 'Xing'
+      },
+      {
+        id: 3,
+        name: 'Ping'
       }
     ]
   }

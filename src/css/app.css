@@ -7,6 +7,7 @@ To keep things ordered we can use one css file to rule them all!*/
 @import 'recipe.css';
 @import 'ingredient-list.css';
 @import 'recipe-edit.css';
+@import 'author-list.css';
 
 
 

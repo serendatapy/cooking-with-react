@@ -104,6 +104,7 @@ React doesn't allow you to change state directly, which is why
 we're using const, so to do it we need to create a duplicates, modify
 then set old state to new state.
 
+
 functions:
    - handleRecipeSelect - just for consistent naming
    - handleRecipeAdd - adds new recipe to recipe array and sets the state
