@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 export default function RecipeEdit({recipe}) {
   const { handleRecipeChange, handleRecipeSelect } = useContext(RecipeContext)
 
-  /*Never overwrite props or states in react, unless absolutely necessary*/
   function handleChange(changes) {
     handleRecipeChange(recipe.id, {...recipe,...changes})
   }
@@ -26,8 +25,6 @@ export default function RecipeEdit({recipe}) {
     }
     handleChange({ingredients: [...recipe.ingredients,newIngredient]})
   }
-  /*Destructuring [...recipe.ingredients,newIngredient] this adds
-  newIngredient to the end of ingredients*/
 
   function handleIngredientDelete(id){
     handleChange({
@@ -121,7 +118,6 @@ export default function RecipeEdit({recipe}) {
           ingredient={ingredient}
           />
         ))}
-        {/* For the moment 2 just as place holders while we hook up functionality */}
       </div>
       <div className="recipe-edit__add-ingredient-btn-container">
         <button
@@ -146,4 +142,8 @@ Updating Values Notes: The value of a form field gets its value from the state,
 not from user input. User input updates the state which is then used
 by React to update the value of the form field. The form always reflects
 the current state values when form fields have values set to the state values.
+
+for servings, note that the value is transformed to an integer
+for textarea, note that value prop is used, rather than iserting directly
+into the textarea, this is recommended way for react.
 */
